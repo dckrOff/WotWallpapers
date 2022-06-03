@@ -1,4 +1,4 @@
-package com.a1tech.wotwallpapers;
+package com.a1tech.wotwallpapers.Model;
 
 public class Tanks {
 

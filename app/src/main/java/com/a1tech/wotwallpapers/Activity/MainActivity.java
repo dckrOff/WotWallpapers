@@ -1,27 +1,29 @@
-package com.a1tech.wotwallpapers;
+package com.a1tech.wotwallpapers.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.a1tech.wotwallpapers.Adapter.TanksAdapter;
+import com.a1tech.wotwallpapers.R;
+import com.a1tech.wotwallpapers.Model.Tanks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private DatabaseReference myRef;
     private ArrayList<Tanks> tanks = new ArrayList<Tanks>();
+    private TanksAdapter tanksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
 //                    Log.e(TAG, "1) " + childDataSnapshot.getKey()); //displays the key for the node
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
-
                     tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.getKey()));
+                    Log.e(TAG, "list size=> " + tanks.size());
+                    setAdapter();
                 }
             }
 
@@ -47,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setAdapter() {
+        RecyclerView recyclerView = findViewById(R.id.rvMain);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        tanksAdapter = new TanksAdapter(this, tanks);
+        recyclerView.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private void init() {
