@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tanks.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
 //                    Log.e(TAG, "1) " + childDataSnapshot.getKey()); //displays the key for the node
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
