@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.a1tech.wotwallpapers.Activity.WallpaperActivity;
 import com.a1tech.wotwallpapers.Model.Tanks;
 import com.a1tech.wotwallpapers.R;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,9 +39,19 @@ public class TanksAdapter extends RecyclerView.Adapter<TanksAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Tanks tanks = this.tanks.get(position);
 
-        Picasso.get().load(tanks.getImg()).into(holder.tankImage);
+        Glide.with(inflater.getContext()).load(tanks.getImg()).into(holder.tankImage);
 
         holder.tankName.setText(tanks.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //passing data through intent on below line.
+                Intent i = new Intent(inflater.getContext(), WallpaperActivity.class);
+                i.putExtra("imgUrl", tanks.getImg());
+                inflater.getContext().startActivity(i);
+            }
+        });
     }
 
     @Override

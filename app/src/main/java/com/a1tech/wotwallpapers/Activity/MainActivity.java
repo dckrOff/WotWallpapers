@@ -2,6 +2,7 @@ package com.a1tech.wotwallpapers.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e(TAG, "1) " + childDataSnapshot.getKey()); //displays the key for the node
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
                     tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.getKey()));
-                    Log.e(TAG, "list size=> " + tanks.size());
                     setAdapter();
                 }
+                Log.e(TAG, "list size=> " + tanks.size());
             }
 
             @Override
@@ -49,13 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Failed to read value.", error.toException());
             }
         });
-
     }
 
     private void setAdapter() {
         RecyclerView recyclerView = findViewById(R.id.rvMain);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         tanksAdapter = new TanksAdapter(this, tanks);
         recyclerView.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
         recyclerView.setNestedScrollingEnabled(false);
