@@ -39,8 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
 //                    Log.e(TAG, "1) " + childDataSnapshot.getKey()); //displays the key for the node
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
-                    tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.getKey()));
-                    setAdapter();
+                    try {
+                        tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.child("img-phone").getValue().toString(), childDataSnapshot.child("country").getValue().toString(), childDataSnapshot.getKey()));
+                        Log.e(TAG, "list size=> " + tanks.size());
+                        setAdapter();
+                    } catch (Exception e) {
+                    }
                 }
                 Log.e(TAG, "list size=> " + tanks.size());
             }
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAdapter() {
         RecyclerView recyclerView = findViewById(R.id.rvMain);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         tanksAdapter = new TanksAdapter(this, tanks);
         recyclerView.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
         recyclerView.setNestedScrollingEnabled(false);

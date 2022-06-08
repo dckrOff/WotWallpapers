@@ -48,7 +48,7 @@ public class TanksAdapter extends RecyclerView.Adapter<TanksAdapter.MyViewHolder
             public void onClick(View view) {
                 //passing data through intent on below line.
                 Intent i = new Intent(inflater.getContext(), WallpaperActivity.class);
-                i.putExtra("imgUrl", tanks.getImg());
+                i.putExtra("imgUrl", tanks.getImgPhone());
                 inflater.getContext().startActivity(i);
             }
         });
