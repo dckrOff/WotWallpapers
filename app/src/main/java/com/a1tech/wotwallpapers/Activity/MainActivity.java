@@ -3,7 +3,6 @@ package com.a1tech.wotwallpapers.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.ColorStateList;
@@ -13,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.a1tech.wotwallpapers.Adapter.CategoryAdapter;
 import com.a1tech.wotwallpapers.Adapter.TanksAdapter;
+import com.a1tech.wotwallpapers.Model.Country;
 import com.a1tech.wotwallpapers.R;
 import com.a1tech.wotwallpapers.Model.Tanks;
 import com.google.firebase.database.DataSnapshot;
@@ -26,12 +27,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, dbCountries;
     private ArrayList<Tanks> tanks = new ArrayList<Tanks>();
+    private ArrayList<Country> countries = new ArrayList<Country>();
     private TanksAdapter tanksAdapter;
+    private CategoryAdapter categoryAdapter;
 
     private ColorStateList def;
     private TextView item1, item2, select;
+
+    private int category = 1;
+
+    private RecyclerView rvAll, rvCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        connectToServer();
+        getAllWallapers();
         onClick();
     }
 
-    private void connectToServer() {
+    private void getAllWallapers() {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -53,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
                     try {
                         tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.child("img-phone").getValue().toString(), childDataSnapshot.child("country").getValue().toString(), childDataSnapshot.getKey()));
-                        Log.e(TAG, "list size=> " + tanks.size());
                         setAdapter();
                     } catch (Exception e) {
+                        Log.e(TAG, "exception in catch()-> " + e);
                     }
                 }
                 Log.e(TAG, "list size=> " + tanks.size());
@@ -69,23 +76,57 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getCategory() {
+        dbCountries.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                countries.clear();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+//                    Log.e(TAG, "1) " + childDataSnapshot.getKey()); //displays the key for the node
+//                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
+                    try {
+                        countries.add(new Country(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.child("country_code").getValue().toString()));
+                        setAdapter();
+                    } catch (Exception e) {
+                    }
+                }
+                Log.e(TAG, "list size=> " + countries.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
     private void setAdapter() {
-        RecyclerView recyclerView = findViewById(R.id.rvMain);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        tanksAdapter = new TanksAdapter(this, tanks);
-        recyclerView.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
-        recyclerView.setNestedScrollingEnabled(false);
+        if (category == 1) {
+            rvAll.setLayoutManager(new GridLayoutManager(this, 1));
+            tanksAdapter = new TanksAdapter(this, tanks);
+            rvAll.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
+//            recyclerView.setNestedScrollingEnabled(false);
+        } else if (category == 2) {
+            rvCategory.setLayoutManager(new GridLayoutManager(this, 2));
+            categoryAdapter = new CategoryAdapter(this, countries);
+            rvCategory.setAdapter(categoryAdapter);
+        }
     }
 
     private void init() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("wallpapers");
+        dbCountries = database.getReference("country");
 
         item1 = findViewById(R.id.item1);
         item2 = findViewById(R.id.item2);
 
         select = findViewById(R.id.select);
         def = item2.getTextColors();
+
+        rvAll = findViewById(R.id.rv_all);
+        rvCategory = findViewById(R.id.rv_category);
     }
 
     private void onClick() {
@@ -105,14 +146,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeTabs(View view) {
         if (view.getId() == R.id.item1) {
+            category = 1;
+
+            rvAll.setVisibility(View.VISIBLE);
+            rvCategory.setVisibility(View.GONE);
+
             select.animate().x(0).setDuration(100);
             item1.setTextColor(Color.WHITE);
             item2.setTextColor(def);
+
+            if (tanks.size() < 1) {
+                getAllWallapers();
+            }
         } else if (view.getId() == R.id.item2) {
+            category = 2;
+
+            rvAll.setVisibility(View.GONE);
+            rvCategory.setVisibility(View.VISIBLE);
+
             item1.setTextColor(def);
             item2.setTextColor(Color.WHITE);
             int size = item2.getWidth();
             select.animate().x(size).setDuration(100);
+            if (countries.size() < 1) {
+                getCategory();
+            }
         }
     }
 }
