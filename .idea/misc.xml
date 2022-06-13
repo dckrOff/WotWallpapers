@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/activity_wallpaper.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/drawable/back_tabs.xml" value="0.246" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/drawable/button_back.xml" value="0.246" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/activity_category.xml" value="0.33" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/activity_wallpaper.xml" value="0.33" />
+        <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/contain_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/item_category.xml" value="0.2777777777777778" />
         <entry key="..\:/Users/A1Tech/AndroidStudioProjects/WotWallpapers/app/src/main/res/layout/item_tank.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/A1Tech/Desktop/WotWallpapers/app/src/main/res/drawable/back_select.xml" value="0.153" />

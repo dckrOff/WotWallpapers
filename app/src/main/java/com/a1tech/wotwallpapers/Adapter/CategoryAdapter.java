@@ -2,15 +2,16 @@ package com.a1tech.wotwallpapers.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.a1tech.wotwallpapers.Activity.CountryActivity;
 import com.a1tech.wotwallpapers.Model.Country;
 import com.a1tech.wotwallpapers.R;
 import com.bumptech.glide.Glide;
@@ -45,11 +46,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(view.getContext(), "category-> " + country.getCountryName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "category-> " + country.getCountryName(), Toast.LENGTH_SHORT).show();
 //                //passing data through intent on below line.
-//                Intent i = new Intent(inflater.getContext(), WallpaperActivity.class);
-//                i.putExtra("imgUrl", tanks.getImgPhone());
-//                inflater.getContext().startActivity(i);
+                Intent i = new Intent(inflater.getContext(), CountryActivity.class);
+                i.putExtra("country", country.getCountry());
+                inflater.getContext().startActivity(i);
             }
         });
     }

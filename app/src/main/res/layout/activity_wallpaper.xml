@@ -28,7 +28,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:backgroundTint="#A6000000" />
+         />
 
     <!--creating a progress bar for loading indicator-->
     <ProgressBar

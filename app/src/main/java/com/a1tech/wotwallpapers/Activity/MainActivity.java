@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference myRef, dbCountries;
     private ArrayList<Tanks> tanks = new ArrayList<Tanks>();
     private ArrayList<Country> countries = new ArrayList<Country>();
+    private ArrayList<Tanks> selectedCategory = new ArrayList<Tanks>();
     private TanksAdapter tanksAdapter;
     private CategoryAdapter categoryAdapter;
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int category = 1;
 
-    private RecyclerView rvAll, rvCategory;
+    private RecyclerView rvAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
                     try {
                         tanks.add(new Tanks(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.child("img-phone").getValue().toString(), childDataSnapshot.child("country").getValue().toString(), childDataSnapshot.getKey()));
-                        setAdapter();
                     } catch (Exception e) {
                         Log.e(TAG, "exception in catch()-> " + e);
                     }
                 }
+                setAdapter();
                 Log.e(TAG, "list size=> " + tanks.size());
             }
 
@@ -86,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e(TAG, "2) " + childDataSnapshot.child("img").getValue());   //gives the value for given keyname
                     try {
                         countries.add(new Country(childDataSnapshot.child("name").getValue().toString(), childDataSnapshot.child("img").getValue().toString(), childDataSnapshot.child("country_code").getValue().toString()));
-                        setAdapter();
                     } catch (Exception e) {
                     }
                 }
+                setAdapter();
                 Log.e(TAG, "list size=> " + countries.size());
             }
 
@@ -108,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
             rvAll.setAdapter(tanksAdapter); // set the Adapter to RecyclerView
 //            recyclerView.setNestedScrollingEnabled(false);
         } else if (category == 2) {
-            rvCategory.setLayoutManager(new GridLayoutManager(this, 2));
+            rvAll.setLayoutManager(new GridLayoutManager(this, 2));
             categoryAdapter = new CategoryAdapter(this, countries);
-            rvCategory.setAdapter(categoryAdapter);
+            rvAll.setAdapter(categoryAdapter);
         }
     }
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         def = item2.getTextColors();
 
         rvAll = findViewById(R.id.rv_all);
-        rvCategory = findViewById(R.id.rv_category);
+//        rvCategory = findViewById(R.id.rv_category);
     }
 
     private void onClick() {
@@ -148,29 +149,19 @@ public class MainActivity extends AppCompatActivity {
         if (view.getId() == R.id.item1) {
             category = 1;
 
-            rvAll.setVisibility(View.VISIBLE);
-            rvCategory.setVisibility(View.GONE);
-
             select.animate().x(0).setDuration(100);
             item1.setTextColor(Color.WHITE);
             item2.setTextColor(def);
 
-            if (tanks.size() < 1) {
-                getAllWallapers();
-            }
+            getAllWallapers();
         } else if (view.getId() == R.id.item2) {
             category = 2;
-
-            rvAll.setVisibility(View.GONE);
-            rvCategory.setVisibility(View.VISIBLE);
 
             item1.setTextColor(def);
             item2.setTextColor(Color.WHITE);
             int size = item2.getWidth();
             select.animate().x(size).setDuration(100);
-            if (countries.size() < 1) {
-                getCategory();
-            }
+            getCategory();
         }
     }
 }
