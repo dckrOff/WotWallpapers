@@ -17,6 +17,7 @@ import com.a1tech.wotwallpapers.Adapter.TanksAdapter;
 import com.a1tech.wotwallpapers.Model.Country;
 import com.a1tech.wotwallpapers.R;
 import com.a1tech.wotwallpapers.Model.Tanks;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ColorStateList def;
     private TextView item1, item2, select;
-
     private int category = 1;
-
     private RecyclerView rvAll;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("wallpapers");
         dbCountries = database.getReference("country");
