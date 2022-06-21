@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/RoundCorner"
-        app:srcCompat="@drawable/french" />
+        app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/tv_country"
